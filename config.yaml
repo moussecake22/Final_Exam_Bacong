@@ -1,0 +1,21 @@
+---
+# Global Configuration
+global:
+  username: "El Cid A. Bacong"
+  course: "CPE212 Automating Server Management"
+  section: "CPE31S4"
+
+# Nginx Configuration
+nginx:
+  worker_processes: 2
+  worker_connections: 1024
+  keepalive_timeout: 65
+  server_name: "{{ ansible_hostname }}"
+  web_root: "/var/www/html"
+
+# Prometheus Configuration
+prometheus:
+  version: "latest"
+  web_port: 9090
+  scrape_interval: "15s"
+  retention_time: "15d"

@@ -1,0 +1,51 @@
+---
+- name: Final Exam - Multi-Node Deployment with Roles
+  hosts: all
+  become: yes
+  vars_files:
+    - config.yaml
+  roles:
+    - role: motd
+
+- name: Configure Nginx on Web Servers
+  hosts: web_servers
+  become: yes
+  vars_files:
+    - config.yaml
+  roles:
+    - role: nginx
+
+- name: Configure Monitoring Stack
+  hosts: monitoring_servers
+  become: yes
+  vars_files:
+    - config.yaml
+  roles:
+    - role: prometheus
+
+- name: Display Deployment Summary
+  hosts: localhost
+  tasks:
+    - name: Show deployment results
+      debug:
+        msg: |
+          FINAL EXAM DEPLOYMENT COMPLETED!
+          
+          SERVICES DEPLOYED:
+          =====================
+          Web Servers (Nginx):
+            - web01: http://192.168.56.105
+            - web02: http://192.168.56.106
+          
+          Monitoring Stack:
+            - monitor01: http://192.168.56.110
+            - Prometheus: http://192.168.56.110:9090
+            - Node Exporter: http://192.168.56.110:9100/metrics
+            - Grafana: http://192.168.56.110:3000 (admin/admin123)
+          
+          STUDENT INFO:
+            - Name: {{ global.username }}
+            - Course: {{ global.course }}
+            - Section: {{ global.section }}
+          
+          All servers configured with custom MOTD
