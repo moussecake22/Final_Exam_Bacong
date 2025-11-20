@@ -1,0 +1,27 @@
+---
+- name: Install NRPE and plugins on Debian
+  apt:
+    name:
+      - nagios-nrpe-server
+      - nagios-plugins
+    state: present
+    update_cache: yes
+  when: ansible_os_family == "Debian"
+
+- name: Install NRPE and plugins on CentOS
+  yum:
+    name:
+      - nrpe
+      - nagios-plugins-load
+      - nagios-plugins-ping
+      - nagios-plugins-http
+      - nagios-plugins-disk
+      - nagios-plugins-procs
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Enable and start NRPE
+  service:
+    name: "{{ 'nagios-nrpe-server' if ansible_os_family == 'Debian' else 'nrpe' }}"
+    state: started
+    enabled: yes
